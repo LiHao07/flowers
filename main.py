@@ -41,7 +41,7 @@ model.load_state_dict(checkpoint['model_state_dict'])
 optimizer = optim.RMSprop(model.parameters(), lr = args.lr, alpha = args.momentum)
 #scheduler = optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: math.pow(1-epoch/args.batches, 3))
 #scheduler = optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: 1)
-#scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1000, gamma=0.1)
+scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1000, gamma=0.1)
 
 if(args.mode=='train'):
     train_dataset = TrainDataset()
@@ -103,17 +103,15 @@ if(args.mode=='train'):
             data = sample['image'].to(device)
             label = sample['label'].to(device)
 
-            #scheduler.optimizer.zero_grad()
-            optimizer.zero_grad()
+            scheduler.optimizer.zero_grad()
             pred = model(data)
             loss = loss_fn(pred, label)
 
             tot_loss = tot_loss*0.99 + loss.data.cpu().numpy()*0.01
 
             loss.backward()
-            optimizer.step()
-            #scheduler.optimizer.step()
-            #scheduler.step()
+            scheduler.optimizer.step()
+            scheduler.step()
             # --------------------------------------------------------------
             tmp = pred.data.cpu().numpy()
             #for i in range(tmp.shape[0]):
@@ -129,7 +127,7 @@ if(args.mode=='train'):
                       'Loss: {loss:.4f}/{tot_loss:.4f} '
                       'Acc: {acc:.4f}/{tot_acc:.4f}'.format(
                     epoch, idx, len(train_loader),
-                    lr=optimizer.param_groups[0]['lr'],
+                    lr=scheduler.optimizer.param_groups[0]['lr'],
                     batch_time=batch_time,
                     loss=loss, tot_loss=tot_loss / (1 - np.power(0.99, batch_num)),
                     acc=acc, tot_acc=tot_acc / (1 - np.power(0.99, batch_num))))
