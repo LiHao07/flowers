@@ -28,7 +28,7 @@ class TrainDataset(Dataset):
                     img = cv2.resize(img, (224,224))
                     img = Image.fromarray(np.uint8(img))
 
-                    self.imgs.append(img.float()/255)
+                    self.imgs.append(img)
                     self.labels.append(i)
 
         self.num = len(self.labels)
@@ -58,7 +58,7 @@ class ValDataset(Dataset):
                     img = cv2.imread('data/train/' + self.label_name[i] + '/{}.png'.format(idx))
                     img = cv2.resize(img, (224,224))
                     img = Image.fromarray(np.uint8(img))
-                    self.imgs.append(img.float()/255)
+                    self.imgs.append(img)
                     self.labels.append(i)
 
         self.num = len(self.labels)
@@ -83,7 +83,7 @@ class TestDataset(Dataset):
             img = cv2.imread('data/test/{}.png'.format(i))
             img = cv2.resize(img, (224,224))
             img = Image.fromarray(np.uint8(img))
-            self.imgs.append(img.float()/255)
+            self.imgs.append(img)
             self.id.append(i)
         self.num = len(self.id)
 
