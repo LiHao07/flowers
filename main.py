@@ -27,7 +27,7 @@ device = torch.device('cuda:{0}'.format(0) if use_cuda else 'cpu')
 CUDA_VISIBLE_DEVICES = 0
 
 model = mobilenetv2(num_classes=5, input_size=224, width_mult=0.1).to(device)
-model.load_state_dict(torch.load('pretrained/mobilenetv2_0.1-7d1d638a.pth'))
+model.load_state_dict(torch.load('pretrained/mobilenetv2-0c6065bc.pth'))
 
 optimizer = optim.Adam(model.parameters(), lr = args.lr)
 scheduler = optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: math.pow(1-epoch/args.batches, 2))
