@@ -48,6 +48,10 @@ if(args.mode=='train'):
     tot_loss = 0
     tot_acc = 0
     batch_num = 0
+
+    best_acc = -1
+    best_loss = -1
+    best_epoch = -1
     for epoch in range(args.epoch):
         for idx, sample in enumerate(train_loader, 1):
             batch_num += 1
@@ -103,8 +107,8 @@ if(args.mode=='train'):
 
                 acc = get_acc(pred.data.cpu().numpy(), label.cpu().numpy())
                 eval_acc = eval_acc + acc
-        #eval_loss /= len(eval_loader)
-        #eval_acc /= len(eval_loader)
+        eval_loss /= len(eval_loader)
+        eval_acc /= len(eval_loader)
         eval_time = time.time() - start_time
         print('Eval -- Epoch:[{0}] '
               'Time: {eval_time:.4f} '
@@ -114,6 +118,18 @@ if(args.mode=='train'):
             eval_time=eval_time,
             eval_loss=eval_loss,
             eval_acc=eval_acc))
+
+        if(eval_acc>best_acc):
+            best_acc = eval_acc
+            best_loss = eval_loss
+            best_epoch = epoch
+
+        print('BEST EPOCH -- Epoch:[{0}] '
+              'Loss: {eval_loss:.4f} '
+              'Acc: {eval_acc:.4f}'.format(
+            best_epoch,
+            eval_loss=best_loss,
+            eval_acc=best_acc))
 #test
 #else:
 
