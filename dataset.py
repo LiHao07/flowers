@@ -54,11 +54,31 @@ class ValDataset(Dataset):
         sample = {'image': self.imgs[idx], 'label': self.labels[idx]}
         return sample
 
+class TestDataset(Dataset):
+    def __init__(self, ):
+        self.imgs = []
+        self.id = []
+        n = len(os.listdir('data/test'))
+        for i in range(n):
+            img = cv2.imread('data/test/{}.png'.format(i))
+            img = cv2.resize(img, (128,128)).transpose(2, 0, 1)
+            img = torch.FloatTensor(img)/255
+            self.imgs.append(img)
+            self.id.append(i)
+        self.num = len(self.id)
+
+    def __len__(self):
+        return self.num
+
+    def __getitem__(self, idx):
+        sample = {'image': self.imgs[idx], 'id': self.id[idx]}
+        return sample
+
 if __name__ == '__main__':
     #train_dataset = TrainDataset()
-    val_dataset = ValDataset()
+    test_dataset = TestDataset()
     #print(train_dataset.__len__())
-    print(val_dataset.__len__())
+    print(test_dataset.__len__())
 
 
 
