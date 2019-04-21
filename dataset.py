@@ -17,7 +17,7 @@ class TrainDataset(Dataset):
                                                     torchvision.transforms.RandomCrop(224),
                                                     torchvision.transforms.RandomHorizontalFlip(),
                                                     torchvision.transforms.ToTensor(),
-                                                    torchvision.transforms.Normalize([0.485, 0.456, -.406],[0.229, 0.224, 0.225])
+                                                    torchvision.transforms.Normalize([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])
                                                     ])
         for i in range(5):
             n = len(os.listdir('data/train/' + self.label_name[i]))
@@ -48,7 +48,7 @@ class ValDataset(Dataset):
         self.labels = []
         self.eval_augmentation = torchvision.transforms.Compose([
             torchvision.transforms.ToTensor(),
-            torchvision.transforms.Normalize([0.485, 0.456, -.406], [0.229, 0.224, 0.225])
+            torchvision.transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ])
         for i in range(5):
             n = len(os.listdir('data/train/' + self.label_name[i]))
@@ -57,7 +57,9 @@ class ValDataset(Dataset):
                 if(idx%10==0):
                     img = cv2.imread('data/train/' + self.label_name[i] + '/{}.png'.format(idx))
                     img = cv2.resize(img, (224,224))
+
                     img = Image.fromarray(np.uint8(img))
+                    print(img)
                     self.imgs.append(img)
                     self.labels.append(i)
 
@@ -77,7 +79,7 @@ class TestDataset(Dataset):
         n = len(os.listdir('data/test'))
         self.test_augmentation = torchvision.transforms.Compose([
             torchvision.transforms.ToTensor(),
-            torchvision.transforms.Normalize([0.485, 0.456, -.406], [0.229, 0.224, 0.225])
+            torchvision.transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ])
         for i in range(n):
             img = cv2.imread('data/test/{}.png'.format(i))
