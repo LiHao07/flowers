@@ -15,7 +15,7 @@ class TrainDataset(Dataset):
                                                     torchvision.transforms.RandomCrop(224),
                                                     torchvision.transforms.RandomHorizontalFlip(),
                                                     torchvision.transforms.ToTensor(),
-                                                    torchvision.Normalize([0.485, 0.456, -.406],[0.229, 0.224, 0.225])
+                                                    torchvision.transforms.Normalize([0.485, 0.456, -.406],[0.229, 0.224, 0.225])
                                                     ])
         for i in range(5):
             n = len(os.listdir('data/train/' + self.label_name[i]))
