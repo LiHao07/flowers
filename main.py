@@ -102,7 +102,7 @@ if(args.mode=='train'):
                 eval_loss = eval_loss  + loss.data.cpu().numpy()
 
                 acc = get_acc(pred.data.cpu().numpy(), label.cpu().numpy())
-                eval_acc = tot_acc + acc
+                eval_acc = eval_acc + acc
         #eval_loss /= len(eval_loader)
         #eval_acc /= len(eval_loader)
         eval_time = time.time() - start_time
