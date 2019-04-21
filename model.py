@@ -22,7 +22,7 @@ class FlowerModel(nn.Module):
         self.conv4 = nn.Conv2d(64, 128, 3, padding=1, bias=True)
         self.bn4 = nn.BatchNorm2d(128)
 
-        self.fc = nn.Linear(128, 5)
+        self.fc = nn.Linear(32, 5)
 
     def forward(self, x):
         x = F.relu(self.bn1(self.conv1(x)))
@@ -31,11 +31,11 @@ class FlowerModel(nn.Module):
         x = F.relu(self.bn2(self.conv2(x)))
         x = F.max_pool2d(x, 2, stride=2, padding=0)
 
-        x = F.relu(self.bn3(self.conv3(x)))
-        x = F.max_pool2d(x, 2, stride=2, padding=0)
+        #x = F.relu(self.bn3(self.conv3(x)))
+        #x = F.max_pool2d(x, 2, stride=2, padding=0)
 
-        x = F.relu(self.bn4(self.conv4(x)))
-        x = F.max_pool2d(x, 2, stride=2, padding=0)
+        #x = F.relu(self.bn4(self.conv4(x)))
+        #x = F.max_pool2d(x, 2, stride=2, padding=0)
 
         x = x = x.mean(3).mean(2)
 
