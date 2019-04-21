@@ -15,7 +15,7 @@ class TrainDataset(Dataset):
             #n=10
             for idx in range(n):
                 if(idx%10!=0):
-                    img = cv2.imread('data/train/' + self.label_name[i] + '/{}.png'.format(i))
+                    img = cv2.imread('data/train/' + self.label_name[i] + '/{}.png'.format(idx))
                     img = cv2.resize(img, (128,128)).transpose(2, 0, 1)
                     img = torch.FloatTensor(img)/255
                     self.imgs.append(img)
@@ -40,7 +40,7 @@ class ValDataset(Dataset):
             #n=10
             for idx in range(n):
                 if(idx%10==0):
-                    img = cv2.imread('data/train/' + self.label_name[i] + '/{}.png'.format(i))
+                    img = cv2.imread('data/train/' + self.label_name[i] + '/{}.png'.format(idx))
                     img = cv2.resize(img, (128,128)).transpose(2, 0, 1)
                     img = torch.FloatTensor(img)/255
                     self.imgs.append(img)

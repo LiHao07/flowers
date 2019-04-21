@@ -28,7 +28,6 @@ with open('submit.csv','w') as File:
         for sample in test_loader:
             data = sample['image'].to(device)
             img_id = sample['id'].data.cpu().numpy()
-            print(img_id)
             pred = model(data).data.cpu().numpy()
             pred = pred.argmax(axis=1)
             for i in range(data.shape[0]):
