@@ -7,6 +7,7 @@ import torch
 import torchvision
 from PIL import Image
 import numpy as np
+import PIL
 class TrainDataset(Dataset):
     def __init__(self, ):
         self.label_name = ['daisy', 'rose', 'tulip', 'dandelion', 'sunflower']
