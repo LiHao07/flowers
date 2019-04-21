@@ -30,7 +30,9 @@ model = mobilenetv2(num_classes=5, input_size=224).to(device)
 weight = torch.load('pretrained/mobilenetv2-0c6065bc.pth')
 weight = {k: v for k, v in weight.items() if (k[:10]!='classifier')}
 
-model.load_state_dict(weight)
+model_dict = model.state_dict()
+model_dict.update(weight)
+model.load_state_dict(model_dict)
 
 optimizer = optim.Adam(model.parameters(), lr = args.lr)
 scheduler = optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: math.pow(1-epoch/args.batches, 2))
