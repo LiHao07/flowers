@@ -51,7 +51,7 @@ if(args.mode=='train'):
     def get_acc(pred, label):
         pred = pred.argmax(axis=1)
         return np.equal(pred, label).mean()
-    
+
     # eval
     eval_loss = 0
     eval_acc = 0
@@ -79,12 +79,7 @@ if(args.mode=='train'):
         eval_loss=eval_loss,
         eval_acc=eval_acc))
 
-    print('BEST EPOCH -- Epoch:[{0}] '
-          'Loss: {eval_loss:.4f} '
-          'Acc: {eval_acc:.4f}'.format(
-        best_epoch,
-        eval_loss=best_loss,
-        eval_acc=best_acc))
+
 
     print('start trainning.')
     model.train()
