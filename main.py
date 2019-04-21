@@ -41,7 +41,7 @@ model.load_state_dict(checkpoint['model_state_dict'])
 optimizer = optim.RMSprop(model.parameters(), lr = args.lr, alpha = args.momentum)
 #scheduler = optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: math.pow(1-epoch/args.batches, 3))
 #scheduler = optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: 1)
-scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=80, gamma=0.1)
+scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=25, gamma=0.1)
 
 if(args.mode=='train'):
     train_dataset = TrainDataset()
