@@ -148,28 +148,28 @@ class MobileNetV1(nn.Module):
                 nn.BatchNorm2d(oup),
                 nn.ReLU(inplace=True),
             )
-
+        G = 4
         self.model = nn.Sequential(
-            conv_bn(3, 32, 2),
-            conv_dw(32, 64, 1),
-            conv_dw(64, 128, 2),
-            conv_dw(128, 128, 1),
-            conv_dw(128, 256, 2),
-            conv_dw(256, 256, 1),
-            conv_dw(256, 512, 2),
-            conv_dw(512, 512, 1),
-            conv_dw(512, 512, 1),
-            conv_dw(512, 512, 1),
-            conv_dw(512, 512, 1),
-            conv_dw(512, 512, 1),
-            conv_dw(512, 1024, 2),
-            conv_dw(1024, 1024, 1),
+            conv_bn(3, 32//G, 2),
+            conv_dw(32//G, 64//G, 1),
+            conv_dw(64//G, 128//G, 2),
+            conv_dw(128//G, 128//G, 1),
+            conv_dw(128//G, 256//G, 2),
+            conv_dw(256//G, 256//G, 1),
+            conv_dw(256//G, 512//G, 2),
+            conv_dw(512//G, 512//G, 1),
+            conv_dw(512//G, 512//G, 1),
+            conv_dw(512//G, 512//G, 1),
+            conv_dw(512//G, 512//G, 1),
+            conv_dw(512//G, 512//G, 1),
+            conv_dw(512//G, 1024//G, 2),
+            conv_dw(1024//G, 1024//G, 1),
             nn.AvgPool2d(7),
         )
-        self.fc = nn.Linear(1024, 1000)
+        self.fc = nn.Linear(1024//G, 5)
 
     def forward(self, x):
         x = self.model(x)
-        x = x.view(-1, 1024)
+        x = x.view(-1, 1024//4)
         x = self.fc(x)
         return x
