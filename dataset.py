@@ -13,7 +13,7 @@ class TrainDataset(Dataset):
         self.labels = []
         self.train_augmentation = torchvision.transforms.Compose([torchvision.transforms.Resize(256),
                                                     torchvision.transforms.RandomCrop(224),
-                                                    torchvision.transofrms.RandomHorizontalFlip(),
+                                                    torchvision.transforms.RandomHorizontalFlip(),
                                                     torchvision.transforms.ToTensor(),
                                                     torchvision.Normalize([0.485, 0.456, -.406],[0.229, 0.224, 0.225])
                                                     ])
