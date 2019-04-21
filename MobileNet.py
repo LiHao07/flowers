@@ -162,7 +162,7 @@ class MobileNetV1(nn.Module):
             #conv_dw(512//self.G, 512//self.G, 1),
             #conv_dw(512//self.G, 512//self.G, 1),
             #conv_dw(512//self.G, 512//self.G, 1),
-            #conv_dw(512//self.G, 1024//self.G, 2),
+            conv_dw(512//self.G, 512//self.G, 2),
             #conv_dw(1024//self.G, 1024//self.G, 1),
             nn.AvgPool2d(7),
         )
