@@ -16,7 +16,7 @@ parser.add_argument('--batch_size', type=int, default=128, metavar='N')
 parser.add_argument('--log_interval', type=int, default=1, metavar='N')
 parser.add_argument('--epoch', type=int, default=100, metavar='N')
 parser.add_argument('--batches', type=int, default=25*100, metavar='N')
-parser.add_argument('--lr', type=float, default=0.0001, metavar='LR')
+parser.add_argument('--lr', type=float, default=0.01, metavar='LR')
 parser.add_argument('--momentum', type=float, default=0.9, metavar='M')
 parser.add_argument('--checkpoint_interval', type=int, default=1, metavar='N')
 args = parser.parse_args()
@@ -27,7 +27,7 @@ device = torch.device('cuda:{0}'.format(0) if use_cuda else 'cpu')
 CUDA_VISIBLE_DEVICES = 0
 
 model = mobilenetv2(num_classes=5, input_size=224).to(device)
-"""
+
 weight = torch.load('pretrained/mobilenetv2-0c6065bc.pth')
 weight = {k: v for k, v in weight.items() if (k[:10]!='classifier')}
 model_dict = model.state_dict()
@@ -36,9 +36,9 @@ model.load_state_dict(model_dict)
 """
 checkpoint = torch.load('checkpoint/MobileNetV2_epoch_67.pth')
 model.load_state_dict(checkpoint['model_state_dict'])
-
+"""
 optimizer = optim.Adam(model.parameters(), lr = args.lr)
-scheduler = optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: math.pow(1-epoch/args.batches, 2))
+scheduler = optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: math.pow(1-epoch/args.batches, 3))
 
 if(args.mode=='train'):
     train_dataset = TrainDataset()
