@@ -103,8 +103,8 @@ if(args.mode=='train'):
 
                 acc = get_acc(pred.data.cpu().numpy(), label.cpu().numpy())
                 eval_acc = tot_acc + acc
-        eval_loss /= len(eval_loader)
-        eval_acc /= len(eval_loader)
+        #eval_loss /= len(eval_loader)
+        #eval_acc /= len(eval_loader)
         eval_time = time.time() - start_time
         print('Eval -- Epoch:[{0}] '
               'Time: {eval_time:.4f} '
