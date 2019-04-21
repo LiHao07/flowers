@@ -5,13 +5,15 @@ import cv2
 import os
 import torch
 import torchvision
-
+from PIL import Image
+import numpy as np
 class TrainDataset(Dataset):
     def __init__(self, ):
         self.label_name = ['daisy', 'rose', 'tulip', 'dandelion', 'sunflower']
         self.imgs = []
         self.labels = []
-        self.train_augmentation = torchvision.transforms.Compose([torchvision.transforms.Resize(256),
+        self.train_augmentation = torchvision.transforms.Compose([#torchvision.transforms.ToPILImage(),
+                                                    torchvision.transforms.Resize(256),
                                                     torchvision.transforms.RandomCrop(224),
                                                     torchvision.transforms.RandomHorizontalFlip(),
                                                     torchvision.transforms.ToTensor(),
@@ -23,8 +25,10 @@ class TrainDataset(Dataset):
             for idx in range(n):
                 if(idx%10!=0):
                     img = cv2.imread('data/train/' + self.label_name[i] + '/{}.png'.format(idx))
-                    img = cv2.resize(img, (224,224)).transpose(2, 0, 1)
-                    img = torch.FloatTensor(img)/255
+                    img = cv2.resize(img, (224,224))#.transpose(2, 0, 1)
+                    #img = torch.FloatTensor(img)
+                    #print(type(img))
+                    img = Image.fromarray(np.uint8(img))
 
                     self.imgs.append(img)
                     self.labels.append(i)
@@ -84,9 +88,10 @@ class TestDataset(Dataset):
 
 if __name__ == '__main__':
     #train_dataset = TrainDataset()
-    test_dataset = TestDataset()
+    train_dataset = TrainDataset()
     #print(train_dataset.__len__())
-    print(test_dataset.__len__())
+    print(train_dataset.__len__())
+    print(train_dataset.__getitem__(0))
 
 
 
