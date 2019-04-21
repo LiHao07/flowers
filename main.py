@@ -11,10 +11,10 @@ import time
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--mode', type=str, default='train')
-parser.add_argument('--batch_size', type=int, default=16, metavar='N')
+parser.add_argument('--batch_size', type=int, default=128, metavar='N')
 parser.add_argument('--log_interval', type=int, default=10, metavar='N')
-parser.add_argument('--epoch', type=int, default=20, metavar='N')
-parser.add_argument('--batches', type=int, default=196*20, metavar='N')
+parser.add_argument('--epoch', type=int, default=10, metavar='N')
+parser.add_argument('--batches', type=int, default=196*10, metavar='N')
 parser.add_argument('--lr', type=float, default=0.001, metavar='LR')
 parser.add_argument('--momentum', type=float, default=0.9, metavar='M')
 parser.add_argument('--checkpoint_interval', type=int, default=1, metavar='N')
@@ -28,7 +28,7 @@ CUDA_VISIBLE_DEVICES = 0
 model = FlowerModel().to(device)
 
 optimizer = optim.Adam(model.parameters(), lr = args.lr)
-scheduler = optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: math.pow(1-epoch/args.batches, 0.9))
+scheduler = optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: math.pow(1-epoch/args.batches, 0.5))
 
 if(args.mode=='train'):
     train_dataset = TrainDataset()
