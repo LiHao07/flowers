@@ -37,7 +37,8 @@ model.load_state_dict(model_dict)
 checkpoint = torch.load('checkpoint/MobileNetV2_epoch_67.pth')
 model.load_state_dict(checkpoint['model_state_dict'])
 """
-optimizer = optim.Adam(model.parameters(), lr = args.lr)
+#optimizer = optim.Adam(model.parameters(), lr = args.lr)
+optimizer = optim.RMSprop(net_RMSprop.parameters(), lr = args.lr, alpha = args.momentum)
 scheduler = optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: math.pow(1-epoch/args.batches, 3))
 
 if(args.mode=='train'):
