@@ -39,7 +39,8 @@ model.load_state_dict(checkpoint['model_state_dict'])
 """
 #optimizer = optim.Adam(model.parameters(), lr = args.lr)
 optimizer = optim.RMSprop(model.parameters(), lr = args.lr, alpha = args.momentum)
-scheduler = optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: math.pow(1-epoch/args.batches, 3))
+#scheduler = optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: math.pow(1-epoch/args.batches, 3))
+scheduler = optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: 1)
 
 if(args.mode=='train'):
     train_dataset = TrainDataset()
