@@ -25,9 +25,7 @@ class TrainDataset(Dataset):
             for idx in range(n):
                 if(idx%10!=0):
                     img = cv2.imread('data/train/' + self.label_name[i] + '/{}.png'.format(idx))
-                    img = cv2.resize(img, (224,224))#.transpose(2, 0, 1)
-                    #img = torch.FloatTensor(img)
-                    #print(type(img))
+                    img = cv2.resize(img, (224,224))
                     img = Image.fromarray(np.uint8(img))
 
                     self.imgs.append(img)
@@ -71,10 +69,14 @@ class TestDataset(Dataset):
         self.imgs = []
         self.id = []
         n = len(os.listdir('data/test'))
+        self.test_augmentation = torchvision.transforms.Compose([
+            torchvision.transforms.ToTensor(),
+            torchvision.transforms.Normalize([0.485, 0.456, -.406], [0.229, 0.224, 0.225])
+        ])
         for i in range(n):
             img = cv2.imread('data/test/{}.png'.format(i))
-            img = cv2.resize(img, (128,128)).transpose(2, 0, 1)
-            img = torch.FloatTensor(img)/255
+            img = cv2.resize(img, (224,224))
+            img = Image.fromarray(np.uint8(img))
             self.imgs.append(img)
             self.id.append(i)
         self.num = len(self.id)
@@ -83,15 +85,16 @@ class TestDataset(Dataset):
         return self.num
 
     def __getitem__(self, idx):
-        sample = {'image': self.imgs[idx], 'id': self.id[idx]}
+        sample = {'image': self.test_augmentation(self.imgs[idx]), 'id': self.id[idx]}
         return sample
 
 if __name__ == '__main__':
     #train_dataset = TrainDataset()
-    train_dataset = TrainDataset()
+    #train_dataset = TrainDataset()
+    test_dataset = TestDataset()
     #print(train_dataset.__len__())
-    print(train_dataset.__len__())
-    print(train_dataset.__getitem__(0))
+    print(test_dataset.__len__())
+    print(test_dataset.__getitem__(0))
 
 
 
