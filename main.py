@@ -12,10 +12,10 @@ from MobileNet import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--mode', type=str, default='train')
-parser.add_argument('--batch_size', type=int, default=64, metavar='N')
+parser.add_argument('--batch_size', type=int, default=128, metavar='N')
 parser.add_argument('--log_interval', type=int, default=1, metavar='N')
-parser.add_argument('--epoch', type=int, default=50, metavar='N')
-parser.add_argument('--batches', type=int, default=50*50, metavar='N')
+parser.add_argument('--epoch', type=int, default=300, metavar='N')
+parser.add_argument('--batches', type=int, default=25*300, metavar='N')
 parser.add_argument('--lr', type=float, default=0.001, metavar='LR')
 parser.add_argument('--momentum', type=float, default=0.9, metavar='M')
 parser.add_argument('--checkpoint_interval', type=int, default=1, metavar='N')
