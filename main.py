@@ -32,7 +32,7 @@ model = mobilenetv2(num_classes=5, input_size=224).to(device)
 #model_dict = model.state_dict()
 #model_dict.update(weight)
 #model.load_state_dict(model_dict)
-checkpoint = torch.load('checkpoint/epoch_97.pth')
+checkpoint = torch.load('checkpoint/MobileNetV2_epoch_97.pth')
 model.load_state_dict(checkpoint['model_state_dict'])
 
 optimizer = optim.Adam(model.parameters(), lr = args.lr)
@@ -47,6 +47,41 @@ if(args.mode=='train'):
     eval_loader = DataLoader(eval_dataset, batch_size=args.batch_size,
                               shuffle=True, num_workers=4, drop_last=False)
     loss_fn = torch.nn.CrossEntropyLoss()
+
+    # eval
+    eval_loss = 0
+    eval_acc = 0
+    start_time = time.time()
+    with torch.no_grad():
+        for sample in eval_loader:
+            data = sample['image'].to(device)
+            label = sample['label'].to(device)
+
+            pred = model(data)
+            loss = loss_fn(pred, label)
+            eval_loss = eval_loss + loss.data.cpu().numpy()
+
+            acc = get_acc(pred.data.cpu().numpy(), label.cpu().numpy())
+            eval_acc = eval_acc + acc
+    eval_loss /= len(eval_loader)
+    eval_acc /= len(eval_loader)
+    eval_time = time.time() - start_time
+    print('Eval -- Epoch:[{0}] '
+          'Time: {eval_time:.4f} '
+          'Loss: {eval_loss:.4f} '
+          'Acc: {eval_acc:.4f}'.format(
+        0,
+        eval_time=eval_time,
+        eval_loss=eval_loss,
+        eval_acc=eval_acc))
+
+    print('BEST EPOCH -- Epoch:[{0}] '
+          'Loss: {eval_loss:.4f} '
+          'Acc: {eval_acc:.4f}'.format(
+        best_epoch,
+        eval_loss=best_loss,
+        eval_acc=best_acc))
+
     print('start trainning.')
     model.train()
     def get_acc(pred, label):
