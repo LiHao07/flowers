@@ -151,22 +151,23 @@ class MobileNetV1(nn.Module):
         self.G = 8
         self.model = nn.Sequential(
             conv_bn(3, 32//self.G, 2),
-            conv_dw(32//self.G, 64//self.G, 1),
+            conv_dw(32//self.G, 64//self.G, 2),
             conv_dw(64//self.G, 128//self.G, 2),
             #conv_dw(128//self.G, 128//self.G, 1),
             conv_dw(128//self.G, 256//self.G, 2),
             #conv_dw(256//self.G, 256//self.G, 1),
-            conv_dw(256//self.G, 512//self.G, 2),
+            conv_dw(256//self.G, 256//self.G, 2),
+            nn.Dropout(0.3),
             #conv_dw(512//self.G, 512//self.G, 1),
             #conv_dw(512//self.G, 512//self.G, 1),
             #conv_dw(512//self.G, 512//self.G, 1),
             #conv_dw(512//self.G, 512//self.G, 1),
             #conv_dw(512//self.G, 512//self.G, 1),
-            conv_dw(512//self.G, 512//self.G, 2),
+            #conv_dw(512//self.G, 512//self.G, 2),
             #conv_dw(1024//self.G, 1024//self.G, 1),
             nn.AvgPool2d(7),
         )
-        self.fc = nn.Linear(512//self.G, 5)
+        self.fc = nn.Linear(256//self.G, 5)
         self._initialize_weights()
 
     def _initialize_weights(self):
@@ -186,6 +187,6 @@ class MobileNetV1(nn.Module):
 
     def forward(self, x):
         x = self.model(x)
-        x = x.view(-1, 512//self.G)
+        x = x.view(-1, 256//self.G)
         x = self.fc(x)
         return x
