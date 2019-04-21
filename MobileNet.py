@@ -148,7 +148,7 @@ class MobileNetV1(nn.Module):
                 nn.BatchNorm2d(oup),
                 nn.ReLU(inplace=True),
             )
-        self.G = 4
+        self.G = 8
         self.model = nn.Sequential(
             conv_bn(3, 32//self.G, 2),
             conv_dw(32//self.G, 64//self.G, 1),
