@@ -162,14 +162,30 @@ class MobileNetV1(nn.Module):
             #conv_dw(512//self.G, 512//self.G, 1),
             #conv_dw(512//self.G, 512//self.G, 1),
             #conv_dw(512//self.G, 512//self.G, 1),
-            conv_dw(512//self.G, 1024//self.G, 2),
+            conv_dw(512//self.G, 512//self.G, 2),
             #conv_dw(1024//self.G, 1024//self.G, 1),
             nn.AvgPool2d(7),
         )
-        self.fc = nn.Linear(1024//self.G, 5)
+        self.fc = nn.Linear(512//self.G, 5)
+        self._initialize_weights()
+
+    def _initialize_weights(self):
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+                m.weight.data.normal_(0, math.sqrt(2. / n))
+                if m.bias is not None:
+                    m.bias.data.zero_()
+            elif isinstance(m, nn.BatchNorm2d):
+                m.weight.data.fill_(1)
+                m.bias.data.zero_()
+            elif isinstance(m, nn.Linear):
+                n = m.weight.size(1)
+                m.weight.data.normal_(0, 0.01)
+                m.bias.data.zero_()
 
     def forward(self, x):
         x = self.model(x)
-        x = x.view(-1, 1024//self.G)
+        x = x.view(-1, 512//self.G)
         x = self.fc(x)
         return x
