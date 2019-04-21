@@ -13,12 +13,14 @@ class TrainDataset(Dataset):
         self.imgs = []
         self.labels = []
         self.train_augmentation = torchvision.transforms.Compose([#torchvision.transforms.ToPILImage(),
-                                                    torchvision.transforms.Resize(256),
-                                                    torchvision.transforms.RandomCrop(224),
-                                                    torchvision.transforms.RandomHorizontalFlip(),
-                                                    torchvision.transforms.ToTensor(),
-                                                    torchvision.transforms.Normalize([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])
-                                                    ])
+            torchvision.transforms.Resize(256),
+            torchvision.transforms.RandomCrop(224),
+            torchvision.transforms.ColorJitter(hue=.05, saturation=.05),
+            torchvision.transforms.RandomHorizontalFlip(),
+            torchvision.transforms.RandomRotation(20, resample=PIL.Image.BILINEAR)
+            torchvision.transforms.ToTensor(),
+            torchvision.transforms.Normalize([0.485, 0.456, 0.406],[0.229, 0.224, 0.225])
+            ])
         for i in range(5):
             n = len(os.listdir('data/train/' + self.label_name[i]))
             #n=10
