@@ -9,7 +9,7 @@ import argparse
 import math
 import time
 
-parser = argparse.ArgumentParser(description='PyTorch SCNN Model')
+parser = argparse.ArgumentParser()
 parser.add_argument('--mode', type=str, default='train')
 parser.add_argument('--batch_size', type=int, default=16, metavar='N')
 parser.add_argument('--log_interval', type=int, default=10, metavar='N')

@@ -12,7 +12,7 @@ class TrainDataset(Dataset):
         self.labels = []
         for i in range(5):
             n = len(os.listdir('data/train/' + self.label_name[i]))
-            n=10
+            #n=10
             for idx in range(n):
                 if(idx%10!=0):
                     img = cv2.imread('data/train/' + self.label_name[i] + '/{}.png'.format(i))
@@ -37,7 +37,7 @@ class ValDataset(Dataset):
         self.labels = []
         for i in range(5):
             n = len(os.listdir('data/train/' + self.label_name[i]))
-            n=10
+            #n=10
             for idx in range(n):
                 if(idx%10==0):
                     img = cv2.imread('data/train/' + self.label_name[i] + '/{}.png'.format(i))
