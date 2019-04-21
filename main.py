@@ -11,13 +11,13 @@ import time
 
 parser = argparse.ArgumentParser(description='PyTorch SCNN Model')
 parser.add_argument('--mode', type=str, default='train')
-parser.add_argument('--batch_size', type=int, default=1, metavar='N')
+parser.add_argument('--batch_size', type=int, default=16, metavar='N')
+parser.add_argument('--log_interval', type=int, default=10, metavar='N')
 parser.add_argument('--epoch', type=int, default=20, metavar='N')
 parser.add_argument('--batches', type=int, default=16000, metavar='N')
 parser.add_argument('--lr', type=float, default=0.01, metavar='LR')
 parser.add_argument('--momentum', type=float, default=0.9, metavar='M')
-parser.add_argument('--checkpoint', metavar='DIR', default=None)
-parser.add_argument('--snapshot', type=str, default=None, metavar='PATH')
+parser.add_argument('--checkpoint_interval', type=int, default=1, metavar='N')
 args = parser.parse_args()
 
 torch.manual_seed(1)
@@ -35,8 +35,8 @@ if(args.mode=='train'):
     train_loader = DataLoader(train_dataset, batch_size=args.batch_size,
                               shuffle=True, num_workers=4, drop_last=False)
 
-    val_dataset = ValDataset()
-    val_loader = DataLoader(val_dataset, batch_size=args.batch_size,
+    eval_dataset = ValDataset()
+    eval_loader = DataLoader(eval_dataset, batch_size=args.batch_size,
                               shuffle=True, num_workers=4, drop_last=False)
     loss_fn = torch.nn.CrossEntropyLoss()
     print('start trainning.')
@@ -44,9 +44,12 @@ if(args.mode=='train'):
     def get_acc(pred, label):
         pred = pred.argmax(axis=1)
         return np.equal(pred, label).mean()
-
+    tot_loss = 0
+    tot_acc = 0
+    batch_num = 0
     for epoch in range(args.epoch):
         for idx, sample in enumerate(train_loader, 1):
+            batch_num += 1
             start_time = time.time()
             #--------------------------------------------------------------
             data = sample['image'].to(device)
@@ -56,35 +59,57 @@ if(args.mode=='train'):
             pred = model(data)
             loss = loss_fn(pred, label)
 
-            tot_loss = tot_loss*0.99 + loss.detech()*0.01
+            tot_loss = tot_loss*0.99 + loss.data.cpu().numpy()*0.01
 
             loss.backward()
             scheduler.optimizer.step()
             scheduler.step()
             # --------------------------------------------------------------
 
-            acc = get_acc(pred.detch().numpy(), label)
-            tot_acc = tot_acc*0.99 + accc*0.01
+            acc = get_acc(pred.data.cpu().numpy(), label.cpu().numpy())
+            tot_acc = tot_acc*0.99 + acc*0.01
 
-            batch_time = time.time() - end()
-            print('Epoch:[{0}][{1}/{2}] '
-                  'LR: {lr:.6f} Time: {batch_time:.4f} '
-                  'Loss: {loss:.4f}/{tot_loss:.4f} '
-                  'Acc: {acc:.4f}{tot_acc:.4f}'.format(
-                epoch, idx, len(train_loader),
-                lr=scheduler.optimizer.param_groups[0]['lr'],
-                batch_time=batch_time,
-                loss=loss, tot_loss=tot_loss / (1 - np.power(0.99, batch_num)),
-                acc=acc, tot_acc=tot_acc / (1 - np.power(0.99, batch_num))))
+            batch_time = time.time() - start_time
+            if(batch_num%args.log_interval==0):
+                print('Epoch:[{0}][{1}/{2}] '
+                      'LR: {lr:.6f} Time: {batch_time:.4f} '
+                      'Loss: {loss:.4f}/{tot_loss:.4f} '
+                      'Acc: {acc:.4f}/{tot_acc:.4f}'.format(
+                    epoch, idx, len(train_loader),
+                    lr=scheduler.optimizer.param_groups[0]['lr'],
+                    batch_time=batch_time,
+                    loss=loss, tot_loss=tot_loss / (1 - np.power(0.99, batch_num)),
+                    acc=acc, tot_acc=tot_acc / (1 - np.power(0.99, batch_num))))
 
+        if(epoch%args.checkpoint_interval==0):
+            torch.save({'model_state_dict': model.state_dict(),
+                        'epoch': epoch}, 'checkpoint/epoch_{}.pth'.format(epoch))
+        eval_loss = 0
+        eval_acc = 0
         #eval
-        #with torch.no_grad():
-        #    for sample in eval_loader:
-        #        data = sample['image'].to(device)
-        #        label = sample['label'].to(device)
+        start_time = time.time()
+        with torch.no_grad():
+            for sample in eval_loader:
+                data = sample['image'].to(device)
+                label = sample['label'].to(device)
 
-        #        pred = model(data)
-        #        loss = loss_fn(pred, label)
+                pred = model(data)
+                loss = loss_fn(pred, label)
+                eval_loss = eval_loss  + loss.data.cpu().numpy()
+
+                acc = get_acc(pred.data.cpu().numpy(), label.cpu().numpy())
+                eval_acc = tot_acc + acc
+        eval_loss /= len(eval_loader)
+        eval_acc /= len(eval_loader)
+        eval_time = time.time() - start_time
+        print('Eval -- Epoch:[{0}] '
+              'Time: {eval_time:.4f} '
+              'Loss: {eval_loss:.4f} '
+              'Acc: {eval_acc:.4f}'.format(
+            epoch,
+            eval_time=eval_time,
+            eval_loss=eval_loss,
+            eval_acc=eval_acc))
 #test
 #else:
 

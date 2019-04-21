@@ -3,6 +3,7 @@ sys.path.append('/Users/lihao/miniconda3/lib/python3.6/site-packages')
 from torch.utils.data import Dataset
 import cv2
 import os
+import torch
 
 class TrainDataset(Dataset):
     def __init__(self, ):
@@ -11,10 +12,12 @@ class TrainDataset(Dataset):
         self.labels = []
         for i in range(5):
             n = len(os.listdir('data/train/' + self.label_name[i]))
+            n=10
             for idx in range(n):
                 if(idx%10!=0):
                     img = cv2.imread('data/train/' + self.label_name[i] + '/{}.png'.format(i))
                     img = cv2.resize(img, (128,128)).transpose(2, 0, 1)
+                    img = torch.FloatTensor(img)
                     self.imgs.append(img)
                     self.labels.append(i)
         self.num = len(self.labels)
@@ -34,10 +37,12 @@ class ValDataset(Dataset):
         self.labels = []
         for i in range(5):
             n = len(os.listdir('data/train/' + self.label_name[i]))
+            n=10
             for idx in range(n):
                 if(idx%10==0):
                     img = cv2.imread('data/train/' + self.label_name[i] + '/{}.png'.format(i))
                     img = cv2.resize(img, (128,128)).transpose(2, 0, 1)
+                    img = torch.FloatTensor(img)
                     self.imgs.append(img)
                     self.labels.append(i)
         self.num = len(self.labels)
@@ -50,9 +55,9 @@ class ValDataset(Dataset):
         return sample
 
 if __name__ == '__main__':
-    train_dataset = TrainDataset()
+    #train_dataset = TrainDataset()
     val_dataset = ValDataset()
-    print(train_dataset.__len__())
+    #print(train_dataset.__len__())
     print(val_dataset.__len__())
 
 
