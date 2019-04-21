@@ -5,6 +5,7 @@ from torch.utils.data import DataLoader
 import torch
 from model import *
 from dataset import *
+from MobileNet import *
 
 use_cuda = torch.cuda.is_available()
 device = torch.device('cuda:{0}'.format(0) if use_cuda else 'cpu')
