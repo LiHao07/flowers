@@ -166,7 +166,7 @@ class MobileNetV1(nn.Module):
             conv_dw(1024//self.G, 1024//self.G, 1),
             nn.AvgPool2d(7),
         )
-        self.fc = nn.Linear(1024//G, 5)
+        self.fc = nn.Linear(1024//self.G, 5)
 
     def forward(self, x):
         x = self.model(x)
