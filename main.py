@@ -15,7 +15,7 @@ parser.add_argument('--batch_size', type=int, default=16, metavar='N')
 parser.add_argument('--log_interval', type=int, default=10, metavar='N')
 parser.add_argument('--epoch', type=int, default=20, metavar='N')
 parser.add_argument('--batches', type=int, default=196*20, metavar='N')
-parser.add_argument('--lr', type=float, default=0.01, metavar='LR')
+parser.add_argument('--lr', type=float, default=0.001, metavar='LR')
 parser.add_argument('--momentum', type=float, default=0.9, metavar='M')
 parser.add_argument('--checkpoint_interval', type=int, default=1, metavar='N')
 args = parser.parse_args()
@@ -65,7 +65,10 @@ if(args.mode=='train'):
             scheduler.optimizer.step()
             scheduler.step()
             # --------------------------------------------------------------
-
+            tmp = pred.data.cpu().numpy()
+            #for i in range(tmp.shape[0]):
+            #    print(tmp[i])
+            #    print(label.cpu().numpy()[i])
             acc = get_acc(pred.data.cpu().numpy(), label.cpu().numpy())
             tot_acc = tot_acc*0.99 + acc*0.01
 
