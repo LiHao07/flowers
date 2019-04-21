@@ -8,6 +8,7 @@ from dataset import *
 import argparse
 import math
 import time
+from MobileNet import *
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--mode', type=str, default='train')
@@ -25,7 +26,7 @@ use_cuda = torch.cuda.is_available()
 device = torch.device('cuda:{0}'.format(0) if use_cuda else 'cpu')
 CUDA_VISIBLE_DEVICES = 0
 
-model = FlowerModel().to(device)
+model = MobileNetV2().to(device)
 
 optimizer = optim.Adam(model.parameters(), lr = args.lr)
 scheduler = optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: math.pow(1-epoch/args.batches, 0.5))
