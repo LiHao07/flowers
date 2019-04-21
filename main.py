@@ -26,7 +26,7 @@ use_cuda = torch.cuda.is_available()
 device = torch.device('cuda:{0}'.format(0) if use_cuda else 'cpu')
 CUDA_VISIBLE_DEVICES = 0
 
-model = MobileNetV2().to(device)
+model = MobileNetV1().to(device)
 
 optimizer = optim.Adam(model.parameters(), lr = args.lr)
 scheduler = optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: math.pow(1-epoch/args.batches, 0.5))
