@@ -25,7 +25,7 @@ class TrainDataset(Dataset):
             for idx in range(n):
                 if(idx%10!=0):
                     img = cv2.imread('data/train/' + self.label_name[i] + '/{}.png'.format(idx))
-                    img = cv2.resize(img, (224,224))
+                    img = cv2.resize(img, (224,224))/255
                     img = Image.fromarray(np.uint8(img))
 
                     self.imgs.append(img)
@@ -56,10 +56,8 @@ class ValDataset(Dataset):
             for idx in range(n):
                 if(idx%10==0):
                     img = cv2.imread('data/train/' + self.label_name[i] + '/{}.png'.format(idx))
-                    img = cv2.resize(img, (224,224))
-
+                    img = cv2.resize(img, (224,224))/255
                     img = Image.fromarray(np.uint8(img))
-                    print(np.asarray(img))
                     self.imgs.append(img)
                     self.labels.append(i)
 
@@ -83,7 +81,7 @@ class TestDataset(Dataset):
         ])
         for i in range(n):
             img = cv2.imread('data/test/{}.png'.format(i))
-            img = cv2.resize(img, (224,224))
+            img = cv2.resize(img, (224,224))/255
             img = Image.fromarray(np.uint8(img))
             self.imgs.append(img)
             self.id.append(i)
