@@ -48,6 +48,10 @@ if(args.mode=='train'):
                               shuffle=True, num_workers=4, drop_last=False)
     loss_fn = torch.nn.CrossEntropyLoss()
 
+    def get_acc(pred, label):
+        pred = pred.argmax(axis=1)
+        return np.equal(pred, label).mean()
+    
     # eval
     eval_loss = 0
     eval_acc = 0
@@ -84,9 +88,7 @@ if(args.mode=='train'):
 
     print('start trainning.')
     model.train()
-    def get_acc(pred, label):
-        pred = pred.argmax(axis=1)
-        return np.equal(pred, label).mean()
+
     tot_loss = 0
     tot_acc = 0
     batch_num = 0
