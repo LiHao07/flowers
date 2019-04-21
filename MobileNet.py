@@ -170,6 +170,6 @@ class MobileNetV1(nn.Module):
 
     def forward(self, x):
         x = self.model(x)
-        x = x.view(-1, 1024self.)
+        x = x.view(-1, 1024//self.G)
         x = self.fc(x)
         return x
