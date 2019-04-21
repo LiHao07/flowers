@@ -37,7 +37,7 @@ class FlowerModel(nn.Module):
         #x = F.relu(self.bn4(self.conv4(x)))
         #x = F.max_pool2d(x, 2, stride=2, padding=0)
 
-        x = x = x.mean(3).mean(2)
+        x = F.relu(x.mean(3).mean(2))
 
         x = F.softmax(self.fc(x), dim=1)
         return x
