@@ -59,7 +59,7 @@ class ValDataset(Dataset):
                     img = cv2.resize(img, (224,224))
                     img = Image.fromarray(np.uint8(img))
                     self.imgs.append(img)
-                    self.id.append(i)
+                    self.labels.append(i)
 
         self.num = len(self.labels)
 
