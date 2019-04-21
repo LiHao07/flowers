@@ -158,7 +158,7 @@ class MobileNetV1(nn.Module):
             #conv_dw(256//self.G, 256//self.G, 1),
             conv_dw(256//self.G, 512//self.G, 2),
 
-            #conv_dw(512//self.G, 512//self.G, 1),
+            conv_dw(512//self.G, 512//self.G, 1),
             #conv_dw(512//self.G, 512//self.G, 1),
             #conv_dw(512//self.G, 512//self.G, 1),
             #conv_dw(512//self.G, 512//self.G, 1),

@@ -16,7 +16,7 @@ parser.add_argument('--batch_size', type=int, default=256, metavar='N')
 parser.add_argument('--log_interval', type=int, default=1, metavar='N')
 parser.add_argument('--epoch', type=int, default=100, metavar='N')
 parser.add_argument('--batches', type=int, default=13*100, metavar='N')
-parser.add_argument('--lr', type=float, default=0.001, metavar='LR')
+parser.add_argument('--lr', type=float, default=0.01, metavar='LR')
 parser.add_argument('--momentum', type=float, default=0.9, metavar='M')
 parser.add_argument('--checkpoint_interval', type=int, default=1, metavar='N')
 args = parser.parse_args()
@@ -26,7 +26,7 @@ use_cuda = torch.cuda.is_available()
 device = torch.device('cuda:{0}'.format(0) if use_cuda else 'cpu')
 CUDA_VISIBLE_DEVICES = 0
 
-model = FlowerModel().to(device)
+model = MobileNetV1().to(device)
 
 optimizer = optim.Adam(model.parameters(), lr = args.lr)
 scheduler = optim.lr_scheduler.LambdaLR(optimizer, lambda epoch: math.pow(1-epoch/args.batches, 2))
