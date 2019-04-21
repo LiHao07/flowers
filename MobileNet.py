@@ -153,9 +153,9 @@ class MobileNetV1(nn.Module):
             conv_bn(3, 32//self.G, 2),
             conv_dw(32//self.G, 64//self.G, 1),
             conv_dw(64//self.G, 128//self.G, 2),
-            conv_dw(128//self.G, 128//self.G, 1),
+            #conv_dw(128//self.G, 128//self.G, 1),
             conv_dw(128//self.G, 256//self.G, 2),
-            conv_dw(256//self.G, 256//self.G, 1),
+            #conv_dw(256//self.G, 256//self.G, 1),
             conv_dw(256//self.G, 512//self.G, 2),
             #conv_dw(512//self.G, 512//self.G, 1),
             #conv_dw(512//self.G, 512//self.G, 1),
@@ -163,7 +163,7 @@ class MobileNetV1(nn.Module):
             #conv_dw(512//self.G, 512//self.G, 1),
             #conv_dw(512//self.G, 512//self.G, 1),
             conv_dw(512//self.G, 1024//self.G, 2),
-            conv_dw(1024//self.G, 1024//self.G, 1),
+            #conv_dw(1024//self.G, 1024//self.G, 1),
             nn.AvgPool2d(7),
         )
         self.fc = nn.Linear(1024//self.G, 5)
