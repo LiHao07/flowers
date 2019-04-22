@@ -10,7 +10,7 @@ from MobileNet import *
 use_cuda = torch.cuda.is_available()
 device = torch.device('cuda:{0}'.format(0) if use_cuda else 'cpu')
 model = mobilenetv2(num_classes=5, input_size=224).to(device)
-checkpoint = torch.load('checkpoint/epoch_81.pth')
+checkpoint = torch.load('checkpoint/epoch_11.pth')
 model.load_state_dict(checkpoint['model_state_dict'])
 
 test_dataset = TestDataset()
@@ -19,7 +19,7 @@ test_loader = DataLoader(test_dataset, batch_size=100,
 model.eval()
 
 label_name = ['daisy', 'rose', 'tulip', 'dandelion', 'sunflower']
-with open('submit-2.csv','w') as File:
+with open('submit-3.csv','w') as File:
     Writer=csv.writer(File)
     Writer.writerow(['Id','Expected'])
 
