@@ -28,7 +28,6 @@ def conv_3x3_bn(inp, oup, stride):
         nn.Conv2d(inp, oup, 3, stride, 1, bias=False),
         nn.BatchNorm2d(oup),
         nn.ReLU6(inplace=True),
-        nn.Dropout(0.5),
     )
 
 
@@ -58,7 +57,6 @@ class InvertedResidual(nn.Module):
                 # pw-linear
                 nn.Conv2d(hidden_dim, oup, 1, 1, 0, bias=False),
                 nn.BatchNorm2d(oup),
-                nn.Dropout(0.5),
             )
         else:
             self.conv = nn.Sequential(
@@ -73,7 +71,6 @@ class InvertedResidual(nn.Module):
                 # pw-linear
                 nn.Conv2d(hidden_dim, oup, 1, 1, 0, bias=False),
                 nn.BatchNorm2d(oup),
-                nn.Dropout(0.5),
             )
 
     def forward(self, x):
