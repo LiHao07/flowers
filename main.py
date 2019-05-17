@@ -30,7 +30,7 @@ CUDA_VISIBLE_DEVICES = 0
 model = mobilenetv2(num_classes=5, input_size=224).to(device)
 
 weight = torch.load('pretrained/mobilenetv2-0c6065bc.pth')
-weight = {k: v for k, v in weight.items() if (k[:10]!='classifier' and k[:11]!='features.17')}
+weight = {k: v for k, v in weight.items() if (k[:10]!='classifier' and k[:11]!='features.17' and k[:4]!='conv')}
 #print(weight.keys())
 
 model_dict = model.state_dict()
