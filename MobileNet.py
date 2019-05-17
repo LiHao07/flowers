@@ -84,7 +84,7 @@ class MobileNetV2(nn.Module):
     def __init__(self, num_classes=1000, input_size=224, width_mult=1.):
         super(MobileNetV2, self).__init__()
         # setting of inverted residual blocks
-        G=2
+        G=1
         self.cfgs = [
             # t, c, n, s
             [1,  16//G, 1, 1],
@@ -93,7 +93,7 @@ class MobileNetV2(nn.Module):
             [6,  64//G, 4, 2],
             [6,  96//G, 3, 1],
             [6, 160//G, 3, 2],
-            [6, 320//G, 1, 1],
+            #[6, 320//G, 1, 1],
         ]
 
         # building first layer
