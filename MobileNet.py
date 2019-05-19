@@ -87,13 +87,13 @@ class MobileNetV2(nn.Module):
         G=1
         self.cfgs = [
             # t, c, n, s
-            [1,  16//G, 1, 2],
+            [1,  16//G, 1, 1],
             [6,  24//G, 2, 2],
             [6,  32//G, 3, 2],
             [6,  64//G, 4, 2],
-            #[6,  96//G, 3, 2],
-            #[6, 96//G, 3, 2],
-            #[6, 320//G, 1, 1],
+            [6,  96//G, 3, 1],
+            [6, 160//G, 3, 2],
+            [6, 320//G, 1, 1],
         ]
 
         # building first layer
@@ -111,7 +111,7 @@ class MobileNetV2(nn.Module):
                 input_channel = output_channel
         self.features = nn.Sequential(*layers)
         # building last several layers
-        output_channel = 128#_make_divisible(1280 * width_mult, 8) if width_mult > 1.0 else 1280
+        output_channel = _make_divisible(1280 * width_mult, 8) if width_mult > 1.0 else 1280
         self.conv = conv_1x1_bn(input_channel, output_channel)
         self.avgpool = nn.AvgPool2d(input_size // 32, stride=1)
         self.classifier = nn.Linear(output_channel, num_classes)

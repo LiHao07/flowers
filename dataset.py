@@ -13,7 +13,7 @@ class TrainDataset(Dataset):
         self.label_name = ['daisy', 'rose', 'tulip', 'dandelion', 'sunflower']
         self.imgs = []
         self.labels = []
-        self.train_augmentation = torchvision.transforms.Compose([#torchvision.transforms.ToPILImage(),
+        self.train_augmentation = torchvision.transforms.Compose([
             torchvision.transforms.Resize(256),
             torchvision.transforms.RandomCrop(224),
             torchvision.transforms.ColorJitter(hue=.05, saturation=.05),
