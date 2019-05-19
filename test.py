@@ -10,7 +10,7 @@ from MobileNet import *
 use_cuda = torch.cuda.is_available()
 device = torch.device('cuda:{0}'.format(0) if use_cuda else 'cpu')
 model = mobilenetv2(num_classes=5, input_size=224).to(device)
-checkpoint = torch.load('checkpoint/epoch_11.pth')
+checkpoint = torch.load('checkpoint/sota-4.pth')
 model.load_state_dict(checkpoint['model_state_dict'])
 
 test_dataset = TestDataset()
